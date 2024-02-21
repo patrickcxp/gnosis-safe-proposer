@@ -5,32 +5,30 @@ import type { HardhatUserConfig, HttpNetworkUserConfig } from "hardhat/types";
 import yargs from "yargs";
 
 const argv = yargs
-  .option("network", {
-    type: "string",
-    default: "hardhat",
-  })
-  .help(false)
-  .version(false).argv;
+    .option("network", {
+      type: "string",
+      default: "hardhat",
+    })
+    .help(false)
+    .version(false).argv;
 
 // Load environment variables.
 dotenv.config();
 const { NETWORK, NODE_URL, INFURA_KEY, MNEMONIC, PK, SOLIDITY_VERSION, SOLIDITY_SETTINGS } = process.env;
 
 const DEFAULT_MNEMONIC =
-  "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat";
+    "candy maple cake sugar pudding cream honey rich smooth crumble sweet treat";
 
 const sharedNetworkConfig: HttpNetworkUserConfig = {};
 if (PK) {
   sharedNetworkConfig.accounts = [PK];
 } else {
-  sharedNetworkConfig.accounts = {
-    mnemonic: MNEMONIC || DEFAULT_MNEMONIC,
-  };
+  sharedNetworkConfig.accounts = [`0x${process.env.PRIVATE_KEY}`];
 }
 
 if (["mainnet", "rinkeby", "kovan", "goerli"].includes(argv.network) && INFURA_KEY === undefined) {
   throw new Error(
-    `Could not find Infura key in env, unable to connect to network ${argv.network}`,
+      `Could not find Infura key in env, unable to connect to network ${argv.network}`,
   );
 }
 
@@ -89,6 +87,15 @@ const userConfig: HardhatUserConfig = {
     bsc: {
       ...sharedNetworkConfig,
       url: `https://bsc-dataseed.binance.org/`,
+    },
+    bscTestnet: {
+      ...sharedNetworkConfig,
+      url: "https://data-seed-prebsc-2-s1.binance.org:8545/",
+    },
+    polygonMumbai: {
+      ...sharedNetworkConfig,
+      url: "https://rpc-mumbai.maticvigil.com",
+      // url: "https://matic-mumbai.chainstacklabs.com",
     },
   },
   namedAccounts: {

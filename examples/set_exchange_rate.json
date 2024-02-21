@@ -1,0 +1,13 @@
+[
+    {
+        "to": "0x3507292a318355BD2C9aAa375A635f644D4eC107",
+        "value": "0",
+        "method": "setExchangeRate(address,string,uint256)",
+        "params": [
+            "0x346453887862432511E74159Fc9FF1b42A8A3F61",
+            "r0",
+            "23600000000000000000000"
+        ],
+        "operation": 0
+    }
+]
